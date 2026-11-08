@@ -156,7 +156,7 @@ function PersonalizeModal({ open, onClose, recipient, sender, onSave }) {
         <p>Add names, then share the special link with someone you love.</p>
         <form onSubmit={(event) => { event.preventDefault(); onSave(to, from) }}>
           <label htmlFor="recipient">For</label>
-          <input id="recipient" value={to} onChange={(e) => setTo(e.target.value)} placeholder="e.g. Ananya & family" autoFocus maxLength={40} />
+          <input id="recipient" value={to} onChange={(e) => setTo(e.target.value)} placeholder="e.g. Vichuuu & family" autoFocus maxLength={40} />
           <label htmlFor="sender">From</label>
           <input id="sender" value={from} onChange={(e) => setFrom(e.target.value)} placeholder="Your name" maxLength={40} />
           <button className="button button--primary button--wide" type="submit"><Flame size={17} /> Create my wish</button>
