@@ -45,9 +45,12 @@ function Fireworks({ active }) {
   const canvasRef = useRef(null)
 
   useEffect(() => {
-    if (!active || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     const canvas = canvasRef.current
     const context = canvas.getContext('2d')
+    if (!active || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      context.clearRect(0, 0, canvas.width, canvas.height)
+      return
+    }
     let frame
     let stopped = false
     let particles = []
@@ -187,9 +190,10 @@ function App() {
     return url.toString()
   }, [recipient, sender])
 
-  const lightDiya = () => {
-    if (!lit) {
-      setLit(true)
+  const toggleDiya = () => {
+    const nextLit = !lit
+    setLit(nextLit)
+    if (nextLit) {
       setFireworkKey((value) => value + 1)
       if (sound) playChime()
     }
@@ -266,15 +270,18 @@ function App() {
 
         <div className="diya-stage">
           <div className="diya-orbit" aria-hidden="true"><i /><i /><i /><i /></div>
-          <button className="diya-button" onClick={lightDiya} aria-label={lit ? 'The diya is lit' : 'Light the diya to reveal your wish'}>
+          <button className="diya-button" onClick={toggleDiya} aria-pressed={lit} aria-label={lit ? 'Turn off the diya' : 'Light the diya to reveal your wish'}>
             <span className="diya-button__halo" />
             <span className="diya-button__flame"><i /></span>
+            <span className="diya-button__spark diya-button__spark--one" />
+            <span className="diya-button__spark diya-button__spark--two" />
+            <span className="diya-button__spark diya-button__spark--three" />
             <span className="diya-button__wick" />
             <span className="diya-button__oil" />
             <span className="diya-button__bowl"><i /></span>
           </button>
-          <button className="light-prompt" onClick={lightDiya} disabled={lit}>
-            {lit ? <><Check size={15} /> Your wish is glowing</> : <><Flame size={15} /> Tap to light the diya</>}
+          <button className="light-prompt" onClick={toggleDiya} aria-pressed={lit}>
+            {lit ? <><Flame size={15} /> Tap to dim the diya</> : <><Flame size={15} /> Tap to light the diya</>}
           </button>
         </div>
         <div className="scroll-cue"><span>Unwrap your wish</span><i /></div>
