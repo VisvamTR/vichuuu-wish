@@ -9,6 +9,14 @@ const sparkleSeeds = Array.from({ length: 34 }, (_, i) => ({
   size: 2 + (i % 3) * 1.5,
 }))
 
+const petalSeeds = Array.from({ length: 14 }, (_, i) => ({
+  id: i,
+  x: (i * 41 + 7) % 100,
+  delay: (i % 7) * 1.4,
+  duration: 8 + (i % 5) * 1.3,
+  drift: -28 + (i % 6) * 12,
+}))
+
 function safeParam(value, fallback = '') {
   return value?.trim().slice(0, 40) || fallback
 }
@@ -219,17 +227,24 @@ function App() {
   return (
     <main className={lit ? 'site is-lit' : 'site'}>
       <div className="noise" aria-hidden="true" />
+      <div className="page-frame" aria-hidden="true"><i /><i /><i /><i /></div>
       <div className="ambient ambient--one" aria-hidden="true" />
       <div className="ambient ambient--two" aria-hidden="true" />
       <div className="mandala mandala--left" aria-hidden="true"><span /><span /><span /></div>
       <div className="mandala mandala--right" aria-hidden="true"><span /><span /><span /></div>
       {sparkleSeeds.map((sparkle) => <i key={sparkle.id} className="sparkle" style={{ left: `${sparkle.x}%`, top: `${sparkle.y}%`, animationDelay: `${sparkle.delay}s`, width: sparkle.size, height: sparkle.size }} aria-hidden="true" />)}
+      <div className="petal-field" aria-hidden="true">
+        {petalSeeds.map((petal) => <i key={petal.id} style={{ '--x': `${petal.x}vw`, '--delay': `${petal.delay}s`, '--duration': `${petal.duration}s`, '--drift': `${petal.drift}px` }} />)}
+      </div>
       <HangingLantern side="left" delay={0} />
       <HangingLantern side="right" delay={0.8} />
       <Fireworks key={fireworkKey} active={lit} />
 
       <nav className="nav" aria-label="Main navigation">
-        <a className="brand" href="#top" aria-label="Diwali wish home"><span>शुभ</span> दीपावली</a>
+        <a className="brand" href="#top" aria-label="Diwali wish home">
+          <span className="brand__mark"><Sparkles size={16} /></span>
+          <span className="brand__words"><small>A little</small>Festival of Lights</span>
+        </a>
         <div className="nav__actions">
           <button className="icon-button" onClick={() => setSound(!sound)} aria-label={sound ? 'Turn sound off' : 'Turn sound on'}>{sound ? <Volume2 size={18} /> : <VolumeX size={18} />}</button>
           <button className="button button--ghost" onClick={() => setModalOpen(true)}><Sparkles size={15} /> Personalise</button>
@@ -250,6 +265,7 @@ function App() {
         </div>
 
         <div className="diya-stage">
+          <div className="diya-orbit" aria-hidden="true"><i /><i /><i /><i /></div>
           <button className="diya-button" onClick={lightDiya} aria-label={lit ? 'The diya is lit' : 'Light the diya to reveal your wish'}>
             <span className="diya-button__halo" />
             <span className="diya-button__flame"><i /></span>
@@ -273,6 +289,7 @@ function App() {
           <p className="wish-card__kicker">A little wish, from the heart</p>
           <h2>May this Diwali write a<br /><em>golden chapter</em> in your story.</h2>
           <p className="wish-card__message">May your home be filled with laughter, your heart with peace, and your days with the kind of magic that stays long after the last firework fades.</p>
+          <div className="wish-ribbon"><span>Shine bright</span><i /><span>Love deeply</span><i /><span>Begin beautifully</span></div>
           <div className="blessings" aria-label="Diwali blessings">
             <span><i>01</i> Light in every corner</span>
             <span><i>02</i> Love in every moment</span>
@@ -295,7 +312,7 @@ function App() {
 
       <footer>
         <p>Made with <Heart size={13} fill="currentColor" /> and a little festive magic.</p>
-        <span>शुभ दीपावली • Happy Diwali</span>
+        <span>Light • Love • Happy Diwali</span>
       </footer>
       <PersonalizeModal open={modalOpen} onClose={() => setModalOpen(false)} recipient={recipient} sender={sender} onSave={saveNames} />
       <div className={`toast ${copied ? 'toast--show' : ''}`} role="status"><Check size={15} /> The wish link is ready to share</div>
